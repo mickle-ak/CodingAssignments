@@ -41,6 +41,8 @@ I try to create the follow solutions:
 
 Manually created a simple CRUD solution. I believe this is expected for this assignment.
 
+[Source](SimpleCrudSolution/README.md)
+
 ### The Solution Using Spring REST Repositories
 
 It should be simpler to create and maintain.
