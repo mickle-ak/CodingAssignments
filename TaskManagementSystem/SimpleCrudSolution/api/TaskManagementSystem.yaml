@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info:
+  title: Simple Task Management System
+  description: API for a simple task management system
+  version: 1.0.0
+
+paths:
+
+  /tasks:
+    $ref: 'tasks/operations.yaml#/operations/root'
+  /tasks/{taskId}:
+    $ref: 'tasks/operations.yaml#/operations/with_task_id'

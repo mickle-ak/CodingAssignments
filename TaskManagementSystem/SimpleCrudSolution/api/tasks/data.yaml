@@ -1,0 +1,38 @@
+schemas:
+
+  TaskList:
+    type: array
+    items:
+      $ref: "#/schemas/Task"
+
+  Task:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier for the task
+      title:
+        type: string
+        required: true
+        maxLength: 250
+        minLength: 1
+        description: Title of the task
+      description:
+        type: string
+        description: Description of the task
+      status:
+        type: string
+        description: Current status of the task
+        enum:
+          - pending
+          - in_progress
+          - completed
+        default: pending
+      priority:
+        type: string
+        description: Priority level of the task
+        enum:
+          - low
+          - medium
+          - high
+        default: medium
