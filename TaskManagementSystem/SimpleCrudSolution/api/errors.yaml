@@ -1,0 +1,53 @@
+components:
+
+    responses:
+
+        BadRequest:
+            description: Bad request
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ErrorResponseBody'
+                        default:
+                            error: "Bad request"
+
+        NotFound:
+            description: Resource not found
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ErrorResponseBody'
+                        default:
+                            error: "Resource not found"
+
+
+        InternalServerError:
+            description: Internal server error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ErrorResponseBody'
+                        default:
+                            error: "Internal server error"
+
+    schemas:
+
+        ErrorResponseBody:
+            type: object
+            properties:
+                error:
+                    type: string
+                    enum:
+                        - "Bad request"
+                        - "Resource not found"
+                        - "Internal server error"
+                        - "Unknown error"
+                    default: "Unknown error"
+                message:
+                    type: string
+            required:
+                - error
+

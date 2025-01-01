@@ -6,10 +6,7 @@ info:
 
 paths:
 
-    /:
-        get:
-            operationId: NOP
-            summary: do nothing
-            responses:
-                '200':
-                    description: OK
+    /tasks:
+        $ref: 'tasks/operations.yaml#/operations/root'
+    /tasks/{taskId}:
+        $ref: 'tasks/operations.yaml#/operations/with_task_id'
