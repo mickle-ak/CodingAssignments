@@ -18,6 +18,12 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
+		<swagger-annotations.version>2.2.21</swagger-annotations.version>
+		<jackson-databind-nullable.version>0.2.2</jackson-databind-nullable.version>
+		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+		<javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
+		<javax.annotation-api.version>1.3.2</javax.annotation-api.version>
 	</properties>
 
 	<dependencies>
@@ -90,6 +96,34 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Required for Open API Generator -->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>${jackson-databind-nullable.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>${javax.annotation-api.version}</version>
+		</dependency>
+
 		<!-- Other -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -127,6 +161,28 @@
 				</configuration>
 			</plugin>
 
+			<!-- Open API Generator -->
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/../api/TaskManagementSystem.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>org.mickleak.taskmanagementsystem.server.api</apiPackage>
+							<modelPackage>org.mickleak.taskmanagementsystem.server.api</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java,openapi.yaml</supportingFilesToGenerate>
+							<configOptions><delegatePattern>true</delegatePattern></configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- enable the instrumentation as java agent for inline-mock-maker -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -149,6 +205,15 @@
 			</plugin>
 
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/generated-sources/openapi/src/main/resources</directory>
+			</resource>
+		</resources>
 	</build>
 
 </project>

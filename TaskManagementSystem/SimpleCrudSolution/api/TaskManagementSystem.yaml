@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+    title: Simple Task Management System
+    description: API for a simple task management system
+    version: 1.0.0
+
+paths:
+
+    /:
+        get:
+            operationId: NOP
+            summary: do nothing
+            responses:
+                '200':
+                    description: OK
