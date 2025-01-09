@@ -171,7 +171,8 @@
 							<supportingFilesToGenerate>ApiUtil.java,openapi.yaml</supportingFilesToGenerate>
 							<configOptions>
 								<useSpringBoot3>true</useSpringBoot3>
-								<delegatePattern>true</delegatePattern>
+								<interfaceOnly>true</interfaceOnly>
+								<requestMappingMode>api_interface</requestMappingMode>
 							</configOptions>
 						</configuration>
 					</execution>

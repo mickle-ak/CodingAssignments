@@ -1,23 +1,23 @@
 package org.mickleak.taskmanagementsystem.server.tasks;
 
 import org.mickleak.taskmanagementsystem.server.api.Task;
-import org.mickleak.taskmanagementsystem.server.api.TasksApiDelegate;
+import org.mickleak.taskmanagementsystem.server.api.TasksApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 
-@Service
-//@RequiredArgsConstructor
-public class TasksControllerDelegate implements TasksApiDelegate {
+@Controller
+public class TasksController implements TasksApi {
 
-	public TasksControllerDelegate( final TasksService tasksService ) {
+	private final TasksService tasksService;
+
+	public TasksController( final TasksService tasksService ) {
 		this.tasksService = tasksService;
 	}
 
-	private final TasksService tasksService;
 
 	@Override
 	public ResponseEntity<Task> createTask( final Task task ) {

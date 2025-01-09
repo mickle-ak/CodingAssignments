@@ -23,7 +23,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 class ConversionAndValidationOverNetworkTest {
 
 	@LocalServerPort
-	private int                  port;
+	private int port;
 
 	private RequestSpecification request;
 
