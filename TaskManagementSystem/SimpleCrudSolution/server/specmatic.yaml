@@ -1,0 +1,4 @@
+sources:
+  - provider: filesystem
+    provides:
+      - ../api/TaskManagementSystem.yaml

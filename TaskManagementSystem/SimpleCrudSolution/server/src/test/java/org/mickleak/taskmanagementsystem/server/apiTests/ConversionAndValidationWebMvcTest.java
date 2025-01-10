@@ -14,6 +14,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.mickleak.taskmanagementsystem.server.apiTests.ApiTestsUtils.createTask;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,7 +27,7 @@ class ConversionAndValidationWebMvcTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private ObjectMapper objectMapper; // Для преобразования объекта в JSON
+	private ObjectMapper objectMapper;
 
 	@MockitoBean
 	private TasksService tasksService;
@@ -40,7 +41,7 @@ class ConversionAndValidationWebMvcTest {
 
 	@Test
 	void checkValidation_expectedError400() throws Exception {
-		final Task invalidTask = new Task( null, null ); // id and title are required and must not be null => 400
+		final Task invalidTask = createTask( null, null ); // id and title are required and must not be null => 400
 		mockMvc.perform( MockMvcRequestBuilders
 			                 .post( "/tasks" )
 			                 .contentType( MediaType.APPLICATION_JSON )
@@ -51,7 +52,7 @@ class ConversionAndValidationWebMvcTest {
 
 	@Test
 	void checkConversionAndValidation_expectedOK() throws Exception {
-		final Task correctTask = new Task( 12, "title" );
+		final Task correctTask = createTask( 12, "title" );
 		mockMvc.perform( MockMvcRequestBuilders
 			                 .put( "/tasks/"+ correctTask.getId() )
 			                 .contentType( MediaType.APPLICATION_JSON )
@@ -59,4 +60,5 @@ class ConversionAndValidationWebMvcTest {
 		               )
 		       .andExpect( status().isOk() );
 	}
+
 }

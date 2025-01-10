@@ -10,12 +10,15 @@ schemas:
         required:
             - title
             - id
+            - status
+            - priority
         properties:
             id:
                 description: Unique identifier for the task
                 type: integer
-                readOnly: true
                 minimum: 1
+                readOnly: true
+                nullable: true
             title:
                 description: Title of the task
                 type: string
@@ -24,6 +27,7 @@ schemas:
             description:
                 description: Description of the task
                 type: string
+                nullable: true
             status:
                 description: Current status of the task
                 type: string

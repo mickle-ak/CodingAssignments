@@ -45,7 +45,8 @@ class ConversionAndValidationOverNetworkTest {
 
 	@Test
 	void checkValidation_expectedError400() {
-		final Task invalidTask = new Task( null, null ); // id and title are required and must not be null => 400
+		final Task invalidTask = ApiTestsUtils.createTask( null, null ); // id and title are required and must not be null
+		// => 400
 		request.body( invalidTask )
 		       .when().post( "/tasks" )
 		       .then().statusCode( 400 );
@@ -53,7 +54,7 @@ class ConversionAndValidationOverNetworkTest {
 
 	@Test
 	void checkConversionAndValidation_expectedOK() {
-		final Task correctTask = new Task( 12, "title" );
+		final Task correctTask = ApiTestsUtils.createTask( 12, "title" );
 		request.body( correctTask )
 		       .when().put( "/tasks/" + correctTask.getId() )
 		       .then().statusCode( 200 );

@@ -3,51 +3,73 @@ components:
     responses:
 
         BadRequest:
-            description: Bad request
+            description: Bad Request
             content:
                 application/json:
                     schema:
                         allOf:
                             -   $ref: '#/components/schemas/ErrorResponseBody'
-                        default:
-                            error: "Bad request"
+                        example:
+                            timestamp: "2020-01-01T00:00:00Z"
+                            status: 400
+                            error: "Bad Request"
+                            path: "/tasks"
 
         NotFound:
-            description: Resource not found
+            description: Resource Not Found
             content:
                 application/json:
                     schema:
                         allOf:
                             -   $ref: '#/components/schemas/ErrorResponseBody'
-                        default:
-                            error: "Resource not found"
+                        example:
+                            timestamp: "2020-01-01T00:00:00Z"
+                            status: 404
+                            error: "Resource Not Found"
+                            path: "/tasks/{taskId}"
 
 
         InternalServerError:
-            description: Internal server error
+            description: Internal Server Error
             content:
                 application/json:
                     schema:
                         allOf:
                             -   $ref: '#/components/schemas/ErrorResponseBody'
-                        default:
-                            error: "Internal server error"
+                        example:
+                            timestamp: "2020-01-01T00:00:00Z"
+                            status: 500
+                            error: "Internal Server Error"
+                            path: "/tasks"
+
+
 
     schemas:
 
         ErrorResponseBody:
             type: object
-            properties:
-                error:
-                    type: string
-                    enum:
-                        - "Bad request"
-                        - "Resource not found"
-                        - "Internal server error"
-                        - "Unknown error"
-                    default: "Unknown error"
-                message:
-                    type: string
             required:
                 - error
-
+            properties:
+                timestamp:
+                    type: string
+                    format: date-time
+                status:
+                    type: integer
+                    format: int32
+                    minimum: 100
+                    maximum: 599
+                error:
+                    type: string
+                message:
+                    type: string
+                path:
+                    type: string
+                    format: uri
+                requestId: {}
+                errors:
+                    type: array
+                    items:
+                        type: string
+                trace:
+                    type: string
