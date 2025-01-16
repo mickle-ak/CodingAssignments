@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.given;
+import static org.mickleak.taskmanagementsystem.server.utils.TestsUtils.createTask;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
@@ -45,8 +46,7 @@ class ConversionAndValidationOverNetworkTest {
 
 	@Test
 	void checkValidation_expectedError400() {
-		final Task invalidTask = ApiTestsUtils.createTask( null, null ); // id and title are required and must not be null
-		// => 400
+		final Task invalidTask = createTask( null, null ); // id and title are required and must not be null => 400
 		request.body( invalidTask )
 		       .when().post( "/tasks" )
 		       .then().statusCode( 400 );
@@ -54,7 +54,7 @@ class ConversionAndValidationOverNetworkTest {
 
 	@Test
 	void checkConversionAndValidation_expectedOK() {
-		final Task correctTask = ApiTestsUtils.createTask( 12, "title" );
+		final Task correctTask = createTask( 12, "title" );
 		request.body( correctTask )
 		       .when().put( "/tasks/" + correctTask.getId() )
 		       .then().statusCode( 200 );

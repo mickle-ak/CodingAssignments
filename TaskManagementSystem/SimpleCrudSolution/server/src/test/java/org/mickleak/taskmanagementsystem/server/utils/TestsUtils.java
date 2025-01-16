@@ -1,9 +1,9 @@
-package org.mickleak.taskmanagementsystem.server.apiTests;
+package org.mickleak.taskmanagementsystem.server.utils;
 
 import org.mickleak.taskmanagementsystem.server.api.Task;
 
 
-public class ApiTestsUtils {
+public class TestsUtils {
 
 	public static Task createTask( final Integer i, final String title ) {
 		return createTask( i, title, org.mickleak.taskmanagementsystem.server.api.Task.StatusEnum.PENDING,
