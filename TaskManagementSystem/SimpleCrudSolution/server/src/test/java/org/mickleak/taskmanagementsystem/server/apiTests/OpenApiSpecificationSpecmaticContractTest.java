@@ -23,5 +23,6 @@ class OpenApiSpecificationSpecmaticContractTest implements SpecmaticContractTest
 		System.setProperty( "port", "8789" );
 		System.setProperty( "SPECMATIC_GENERATIVE_TESTS", "true" );
 		System.setProperty( "SPECMATIC_TEST_PARALLELISM", "auto" );
+		System.setProperty( "MAX_TEST_REQUEST_COMBINATIONS", "10" );
 	}
 }
