@@ -25,7 +25,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 public class WebSecurityConfig {
 
-	@Bean
+	public static final String TMS_SECURITY_FILTER_CHAIN_BEAN_NAME = "tmsSecurityFilterChain";
+
+	@Bean( TMS_SECURITY_FILTER_CHAIN_BEAN_NAME )
 	public SecurityFilterChain filterChain( HttpSecurity http,
 	                                        AuthenticationEntryPoint authenticationEntryPoint ) throws Exception {
 		return http
