@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 
@@ -32,6 +33,7 @@ public class JacksonConfiguration {
 
 		public static final String MODEL_PACKAGE_NAME = "org.mickleak.taskmanagementsystem.server.api";
 
+		@Nullable
 		@Override
 		public String deserialize( JsonParser p, DeserializationContext ctxt ) throws IOException {
 			JsonToken token = p.currentToken();
@@ -46,7 +48,8 @@ public class JacksonConfiguration {
 		}
 
 		@Override
-		public JsonDeserializer<?> createContextual( final DeserializationContext ctxt, final BeanProperty property ) {
+		public JsonDeserializer<?> createContextual( @Nullable final DeserializationContext ctxt,
+		                                             @Nullable final BeanProperty property ) {
 			if (property != null) {
 				Class<?> containingClass = property.getMember().getDeclaringClass();
 				if (containingClass.getPackageName().startsWith(MODEL_PACKAGE_NAME)) {
