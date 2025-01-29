@@ -1,12 +1,16 @@
 package org.mickleak.taskmanagementsystem.server.apiTests;
 
 import io.specmatic.test.SpecmaticContractTest;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.mickleak.taskmanagementsystem.server.auth.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
@@ -17,12 +21,20 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
                                       HibernateJpaAutoConfiguration.class } )
 class OpenApiSpecificationSpecmaticContractTest implements SpecmaticContractTest {
 
-	@BeforeAll
-	static void setUp() {
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+
+
+	@BeforeEach
+	void setUp() {
+		final String jwtToken = jwtTokenProvider.createToken( "admin", List.of( "ADMIN" ) );
+
 		System.setProperty( "host", "localhost" );
 		System.setProperty( "port", "8789" );
 		System.setProperty( "SPECMATIC_GENERATIVE_TESTS", "true" );
 		System.setProperty( "SPECMATIC_TEST_PARALLELISM", "auto" );
 		System.setProperty( "MAX_TEST_REQUEST_COMBINATIONS", "10" );
+		System.setProperty( "BearerAuth", jwtToken );
+		System.setProperty( "filterNot", "PATH=/login" );
 	}
 }
