@@ -4,7 +4,20 @@ info:
     description: API for a simple task management system
     version: 1.0.0
 
+components:
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+
+security:
+    - BearerAuth: []
+
 paths:
+
+    /login:
+        $ref: 'login.yaml#/login'
 
     /tasks:
         $ref: 'tasks/operations.yaml#/operations/root'

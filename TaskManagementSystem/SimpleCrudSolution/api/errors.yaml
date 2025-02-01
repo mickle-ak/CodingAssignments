@@ -42,6 +42,16 @@ components:
                             error: "Internal Server Error"
                             path: "/tasks"
 
+        Unauthorized:
+            description: Unauthorized
+            headers:
+                WWW-Authenticate:
+                    schema:
+                        type: string
+                    example: 'Bearer realm="TaskManagementSystem"'
+
+        AccessDenied:
+            description: Access Denied
 
 
     schemas:

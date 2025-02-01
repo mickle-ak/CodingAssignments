@@ -2,8 +2,11 @@ package org.mickleak.taskmanagementsystem.server.configuration;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mickleak.taskmanagementsystem.server.auth.JwtAuthenticationFilter;
+import org.mickleak.taskmanagementsystem.server.auth.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -25,21 +29,23 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 public class WebSecurityConfig {
 
-	public static final String TMS_SECURITY_FILTER_CHAIN_BEAN_NAME = "tmsSecurityFilterChain";
-
-	@Bean( TMS_SECURITY_FILTER_CHAIN_BEAN_NAME )
+	@Bean
 	public SecurityFilterChain filterChain( HttpSecurity http,
+	                                        JwtAuthenticationFilter jwtAuthenticationFilter,
 	                                        AuthenticationEntryPoint authenticationEntryPoint ) throws Exception {
 		return http
 			.cors( Customizer.withDefaults() )
 			.authorizeHttpRequests(
 				authorizeRequests -> authorizeRequests
 					.dispatcherTypeMatchers( DispatcherType.ERROR, DispatcherType.FORWARD ).permitAll()
-					.anyRequest().permitAll() )
+					.requestMatchers( HttpMethod.POST, "/login" ).permitAll()
+					.requestMatchers( HttpMethod.GET, "/tasks/**" ).permitAll()
+					.anyRequest().authenticated() )
 			.csrf( AbstractHttpConfigurer::disable )
 			.formLogin( AbstractHttpConfigurer::disable )
 			.httpBasic( AbstractHttpConfigurer::disable )
 			.sessionManagement( sessionManagement -> sessionManagement.sessionCreationPolicy( STATELESS ) )
+			.addFilterBefore( jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class )
 			.exceptionHandling( exceptionHandling -> exceptionHandling.authenticationEntryPoint( authenticationEntryPoint ) )
 			.build();
 	}
@@ -65,6 +71,11 @@ public class WebSecurityConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public JwtTokenProvider jwtTokenProvider() {
+		return new JwtTokenProvider();
 	}
 
 	// To return 401 instead of 403 on bad credentials (and if no authorization happened at all).

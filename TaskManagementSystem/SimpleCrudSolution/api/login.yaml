@@ -1,0 +1,56 @@
+
+login:
+  post:
+    operationId: login
+    summary: Login
+    security: [] # No security required for login
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequest'
+    responses:
+      '200':
+        description: Login successful
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginResponse'
+      '400':
+        $ref: 'errors.yaml#/components/responses/BadRequest'
+      '401':
+        $ref: 'errors.yaml#/components/responses/Unauthorized'
+      '500':
+        $ref: 'errors.yaml#/components/responses/InternalServerError'
+
+
+components:
+  schemas:
+
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: "user123"
+        password:
+          type: string
+          maxLength: 128
+          example: "securepassword"
+      required:
+        - username
+        - password
+
+    LoginResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          minLength: 1
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik5vcm1hbCIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+      required:
+        - access_token
+

@@ -3,9 +3,10 @@ package org.mickleak.taskmanagementsystem.server.apiTests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mickleak.taskmanagementsystem.server.api.Task;
+import org.mickleak.taskmanagementsystem.server.auth.JwtTokenProvider;
+import org.mickleak.taskmanagementsystem.server.configuration.WebSecurityConfig;
 import org.mickleak.taskmanagementsystem.server.tasks.TasksController;
 import org.mickleak.taskmanagementsystem.server.tasks.TasksService;
-import org.mickleak.taskmanagementsystem.server.utils.DisableWebSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -14,13 +15,15 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+
 import static org.mickleak.taskmanagementsystem.server.utils.TestsUtils.createTask;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @WebMvcTest( controllers = TasksController.class )
-@Import( { DisableWebSecurityConfig.class } )
+@Import( WebSecurityConfig.class )
 class ConversionAndValidationWebMvcTest {
 
 	@Autowired
@@ -28,6 +31,9 @@ class ConversionAndValidationWebMvcTest {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 
 	@MockitoBean
 	private TasksService tasksService;
@@ -44,6 +50,7 @@ class ConversionAndValidationWebMvcTest {
 		final Task invalidTask = createTask( null, null ); // id and title are required and must not be null => 400
 		mockMvc.perform( MockMvcRequestBuilders
 			                 .post( "/tasks" )
+			                 .header( "Authorization", "Bearer " + jwtTokenProvider.createToken( "admin", List.of( "ADMIN" ) ) )
 			                 .contentType( MediaType.APPLICATION_JSON )
 			                 .content( objectMapper.writeValueAsString( invalidTask ) )
 		               )
@@ -54,7 +61,8 @@ class ConversionAndValidationWebMvcTest {
 	void checkConversionAndValidation_expectedOK() throws Exception {
 		final Task correctTask = createTask( 12, "title" );
 		mockMvc.perform( MockMvcRequestBuilders
-			                 .put( "/tasks/"+ correctTask.getId() )
+			                 .put( "/tasks/" + correctTask.getId() )
+			                 .header( "Authorization", "Bearer " + jwtTokenProvider.createToken( "admin", List.of( "ADMIN" ) ) )
 			                 .contentType( MediaType.APPLICATION_JSON )
 			                 .content( objectMapper.writeValueAsString( correctTask ) )
 		               )
