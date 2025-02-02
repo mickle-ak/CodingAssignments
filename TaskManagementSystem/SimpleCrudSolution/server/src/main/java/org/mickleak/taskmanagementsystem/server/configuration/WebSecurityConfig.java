@@ -4,6 +4,7 @@ import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
 import org.mickleak.taskmanagementsystem.server.auth.JwtAuthenticationFilter;
 import org.mickleak.taskmanagementsystem.server.auth.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,6 +30,10 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 public class WebSecurityConfig {
 
+	@Value( "${openapi.simpleTaskManagementSystem.base-path:}" )
+	private String basePath;
+
+
 	@Bean
 	public SecurityFilterChain filterChain( HttpSecurity http,
 	                                        JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -38,8 +43,8 @@ public class WebSecurityConfig {
 			.authorizeHttpRequests(
 				authorizeRequests -> authorizeRequests
 					.dispatcherTypeMatchers( DispatcherType.ERROR, DispatcherType.FORWARD ).permitAll()
-					.requestMatchers( HttpMethod.POST, "/login" ).permitAll()
-					.requestMatchers( HttpMethod.GET, "/tasks/**" ).permitAll()
+					.requestMatchers( HttpMethod.POST, basePath + "/login" ).permitAll()
+					.requestMatchers( HttpMethod.GET, basePath + "/tasks/**" ).permitAll()
 					.anyRequest().authenticated() )
 			.csrf( AbstractHttpConfigurer::disable )
 			.formLogin( AbstractHttpConfigurer::disable )

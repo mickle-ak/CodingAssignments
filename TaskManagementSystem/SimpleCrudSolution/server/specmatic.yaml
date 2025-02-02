@@ -1,4 +1,4 @@
 sources:
   - provider: filesystem
     provides:
-      - ../api/TaskManagementSystem.yaml
+      - ../api/v1/TaskManagementSystem.yaml

@@ -1,7 +1,7 @@
 package org.mickleak.taskmanagementsystem.server.tasks;
 
-import org.mickleak.taskmanagementsystem.server.api.Task;
-import org.mickleak.taskmanagementsystem.server.api.TasksApi;
+import org.mickleak.taskmanagementsystem.server.api.v1.Task;
+import org.mickleak.taskmanagementsystem.server.api.v1.TasksApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

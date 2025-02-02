@@ -23,6 +23,8 @@
 		<rest-assured.version>5.4.0</rest-assured.version>
 		<specmatic.version>2.2.0</specmatic.version>
 		<jjwt.version>0.12.6</jjwt.version>
+		<!--suppress XmlUnresolvedReference - application.properties#api.version is loaded in properties-maven-plugin -->
+		<api.version>${application.properties#api.version}</api.version>
 	</properties>
 
 	<dependencies>
@@ -182,10 +184,10 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/../api/TaskManagementSystem.yaml</inputSpec>
+							<inputSpec>${project.basedir}/../api/${api.version}/TaskManagementSystem.yaml</inputSpec>
 							<generatorName>spring</generatorName>
-							<apiPackage>org.mickleak.taskmanagementsystem.server.api</apiPackage>
-							<modelPackage>org.mickleak.taskmanagementsystem.server.api</modelPackage>
+							<apiPackage>org.mickleak.taskmanagementsystem.server.api.${api.version}</apiPackage>
+							<modelPackage>org.mickleak.taskmanagementsystem.server.api.${api.version}</modelPackage>
 							<supportingFilesToGenerate>ApiUtil.java,openapi.yaml</supportingFilesToGenerate>
 							<configOptions>
 								<useSpringBoot3>true</useSpringBoot3>
@@ -193,6 +195,25 @@
 								<requestMappingMode>api_interface</requestMappingMode>
 								<openApiNullable>false</openApiNullable>
 							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>${project.basedir}/src/main/resources/application.properties</file>
+							</files>
+							<keyPrefix>application.properties#</keyPrefix>
 						</configuration>
 					</execution>
 				</executions>
@@ -215,7 +236,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<!--suppress MavenModelInspection - org.mockito:mockito-core:jar is created in the maven-dependency-plugin -->
-					<argLine> -Xshare:off -javaagent:${org.mockito:mockito-core:jar}</argLine>
+					<argLine>-Xshare:off -javaagent:${org.mockito:mockito-core:jar}</argLine>
 				</configuration>
 			</plugin>
 

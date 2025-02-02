@@ -1,6 +1,6 @@
 package org.mickleak.taskmanagementsystem.server.tasks;
 
-import org.mickleak.taskmanagementsystem.server.api.Task;
+import org.mickleak.taskmanagementsystem.server.api.v1.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

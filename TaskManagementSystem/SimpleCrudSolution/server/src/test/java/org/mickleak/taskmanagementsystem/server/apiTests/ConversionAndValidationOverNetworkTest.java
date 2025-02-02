@@ -4,9 +4,10 @@ package org.mickleak.taskmanagementsystem.server.apiTests;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mickleak.taskmanagementsystem.server.api.Task;
+import org.mickleak.taskmanagementsystem.server.api.v1.Task;
 import org.mickleak.taskmanagementsystem.server.auth.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -30,6 +31,9 @@ class ConversionAndValidationOverNetworkTest {
 	@LocalServerPort
 	private int port;
 
+	@Value( "${openapi.simpleTaskManagementSystem.base-path:}" )
+	private String basePath;
+
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 
@@ -39,7 +43,7 @@ class ConversionAndValidationOverNetworkTest {
 	@BeforeEach
 	void setUp() {
 		request = given()
-			.baseUri( "http://localhost:" + port )
+			.baseUri( "http://localhost:" + port + basePath )
 			.header( "Authorization", "Bearer " + jwtTokenProvider.createToken( "admin", List.of( "ADMIN" ) ) )
 			.contentType( "application/json" );
 	}

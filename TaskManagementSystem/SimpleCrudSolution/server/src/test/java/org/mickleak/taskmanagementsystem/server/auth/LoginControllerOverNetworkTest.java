@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mickleak.taskmanagementsystem.server.api.LoginRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mickleak.taskmanagementsystem.server.api.v1.LoginRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -28,11 +28,8 @@ class LoginControllerOverNetworkTest {
 	@LocalServerPort
 	private int port;
 
-	@Autowired
-	private LoginController loginController;
-
-	@Autowired
-	private JwtTokenProvider jwtTokenProvider;
+	@Value( "${openapi.simpleTaskManagementSystem.base-path:}" )
+	private String basePath;
 
 	private RequestSpecification request;
 
@@ -40,7 +37,7 @@ class LoginControllerOverNetworkTest {
 	@BeforeEach
 	void setUp() {
 		request = given()
-			.baseUri( "http://localhost:" + port )
+			.baseUri( "http://localhost:" + port + basePath )
 			.contentType( "application/json" );
 	}
 
