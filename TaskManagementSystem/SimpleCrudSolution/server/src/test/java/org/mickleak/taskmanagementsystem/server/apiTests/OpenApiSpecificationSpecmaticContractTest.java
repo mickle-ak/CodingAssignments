@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
@@ -29,15 +31,20 @@ class OpenApiSpecificationSpecmaticContractTest implements SpecmaticContractTest
 	@Value( "${server.port}" )
 	private String port;
 
+	@Value( "${api.version}" )
+	private String apiVersion;
+
 	@Value( "${openapi.simpleTaskManagementSystem.base-path:}" )
 	private String basePath;
 
 
 	@BeforeEach
-	void setUp() {
+	void setUp() throws IOException {
 		final String jwtToken = jwtTokenProvider.createToken( "admin", List.of( "ADMIN" ) );
+		final String contractPaths = new File( "../api/" + apiVersion + "/TaskManagementSystem.yaml" ).getCanonicalPath();
 
-		System.setProperty( "testBaseURL", "http://localhost:"+port+basePath );
+		System.setProperty( "testBaseURL", "http://localhost:" + port + basePath );
+		System.setProperty( "contractPaths", contractPaths );
 		System.setProperty( "SPECMATIC_GENERATIVE_TESTS", "true" );
 		System.setProperty( "SPECMATIC_TEST_PARALLELISM", "auto" );
 		System.setProperty( "MAX_TEST_REQUEST_COMBINATIONS", "10" );
