@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
+@SuppressWarnings( "ResultOfMethodCallIgnored" )
 @SpringBootTest( webEnvironment = RANDOM_PORT )
 @EnableAutoConfiguration( exclude = { DataSourceAutoConfiguration.class,
                                       JpaRepositoriesAutoConfiguration.class,

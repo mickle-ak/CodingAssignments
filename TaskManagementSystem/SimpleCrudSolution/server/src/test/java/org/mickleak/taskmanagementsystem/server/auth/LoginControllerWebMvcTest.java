@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Import( WebSecurityConfig.class )
 class LoginControllerWebMvcTest {
 
+	@SuppressWarnings( "SpringJavaInjectionPointsAutowiringInspection" )
 	@Autowired
 	private LoginController loginController;
 

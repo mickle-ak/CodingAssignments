@@ -22,6 +22,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
                                       HibernateJpaAutoConfiguration.class } )
 class OpenApiSpecificationSpecmaticContractTest implements SpecmaticContractTest {
 
+	@SuppressWarnings( "SpringJavaInjectionPointsAutowiringInspection" )
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 

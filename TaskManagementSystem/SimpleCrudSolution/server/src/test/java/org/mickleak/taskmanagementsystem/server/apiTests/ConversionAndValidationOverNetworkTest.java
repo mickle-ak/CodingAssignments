@@ -34,6 +34,7 @@ class ConversionAndValidationOverNetworkTest {
 	@Value( "${openapi.simpleTaskManagementSystem.base-path:}" )
 	private String basePath;
 
+	@SuppressWarnings( "SpringJavaInjectionPointsAutowiringInspection" )
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 
