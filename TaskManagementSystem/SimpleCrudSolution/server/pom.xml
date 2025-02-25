@@ -21,7 +21,7 @@
 		<openapi-generator-maven-plugin.version>7.10.0</openapi-generator-maven-plugin.version>
 		<swagger-annotations.version>2.2.21</swagger-annotations.version>
 		<rest-assured.version>5.4.0</rest-assured.version>
-		<specmatic.version>2.3.0</specmatic.version>
+		<specmatic.version>2.5.0</specmatic.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<!--suppress XmlUnresolvedReference - application.properties#api.version is loaded in properties-maven-plugin -->
 		<api.version>${application.properties#api.version}</api.version>

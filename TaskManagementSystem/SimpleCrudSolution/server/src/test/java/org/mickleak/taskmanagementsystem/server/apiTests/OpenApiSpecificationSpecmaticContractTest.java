@@ -49,7 +49,7 @@ class OpenApiSpecificationSpecmaticContractTest implements SpecmaticContractTest
 		System.setProperty( "SPECMATIC_TEST_PARALLELISM", "auto" );
 		System.setProperty( "MAX_TEST_REQUEST_COMBINATIONS", "10" );
 		System.setProperty( "BearerAuth", jwtToken );
-		System.setProperty( "filterNot", "PATH=/login" );
+		System.setProperty( "filter", "PATH!='/login'" );
 		System.setProperty( "strictMode", "true" );
 	}
 }
