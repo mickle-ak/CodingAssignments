@@ -1,28 +1,37 @@
+openapi: 3.0.0
+info:
+  title: login operation
+  description:  Login operation for the task management system
+  version: '1.0'
+paths: {}
 
-login:
-  post:
-    operationId: login
-    summary: Login
-    security: [] # No security required for login
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LoginRequest'
-    responses:
-      '200':
-        description: Login successful
+
+# noinspection YAMLSchemaValidation
+operations:
+  root:
+    post:
+      operationId: login
+      summary: Login
+      security: [] # No security required for login
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginResponse'
-      '400':
-        $ref: 'errors.yaml#/components/responses/BadRequest'
-      '401':
-        $ref: 'errors.yaml#/components/responses/Unauthorized'
-      '500':
-        $ref: 'errors.yaml#/components/responses/InternalServerError'
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
 
 
 components:

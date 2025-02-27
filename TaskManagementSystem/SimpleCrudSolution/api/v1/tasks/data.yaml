@@ -1,46 +1,55 @@
-schemas:
+openapi: 3.0.0
+info:
+    title: Task Objects
+    description: Task objects for the Task Management System
+    version: '1.0'
+paths: {}
 
-    TaskList:
-        type: array
-        items:
-            $ref: "#/schemas/Task"
+components:
 
-    Task:
-        type: object
-        required:
-            - title
-            - id
-            - status
-            - priority
-        properties:
-            id:
-                description: Unique identifier for the task
-                type: integer
-                minimum: 1
-                readOnly: true
-                nullable: true
-            title:
-                description: Title of the task
-                type: string
-                maxLength: 512
-                minLength: 1
-            description:
-                description: Description of the task
-                type: string
-                nullable: true
-            status:
-                description: Current status of the task
-                type: string
-                enum:
-                    - pending
-                    - in_progress
-                    - completed
-                default: pending
-            priority:
-                description: Priority level of the task
-                type: string
-                enum:
-                    - low
-                    - medium
-                    - high
-                default: medium
+    schemas:
+
+        TaskList:
+            type: array
+            items:
+                $ref: "#/components/schemas/Task"
+
+        Task:
+            type: object
+            required:
+                - title
+                - id
+                - status
+                - priority
+            properties:
+                id:
+                    description: Unique identifier for the task
+                    type: integer
+                    minimum: 1
+                    readOnly: true
+                    nullable: true
+                title:
+                    description: Title of the task
+                    type: string
+                    maxLength: 512
+                    minLength: 1
+                description:
+                    description: Description of the task
+                    type: string
+                    nullable: true
+                status:
+                    description: Current status of the task
+                    type: string
+                    enum:
+                        - pending
+                        - in_progress
+                        - completed
+                    default: pending
+                priority:
+                    description: Priority level of the task
+                    type: string
+                    enum:
+                        - low
+                        - medium
+                        - high
+                    default: medium

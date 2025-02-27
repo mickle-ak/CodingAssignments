@@ -17,7 +17,7 @@ security:
 paths:
 
     /login:
-        $ref: 'login.yaml#/login'
+        $ref: 'login.yaml#/operations/root'
 
     /tasks:
         $ref: 'tasks/operations.yaml#/operations/root'
