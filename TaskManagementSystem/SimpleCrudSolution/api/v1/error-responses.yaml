@@ -60,6 +60,18 @@ components:
         AccessDenied:
             description: Access Denied
 
+        InvalidStateError:
+            description: Invalid State Error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            -   $ref: '#/components/schemas/ErrorResponseBody'
+                        example:
+                            timestamp: "2020-01-01T00:00:00Z"
+                            status: 409
+                            error: "Invalid State Error"
+                            path: "/tasks/{taskId}/status"
 
     schemas:
 

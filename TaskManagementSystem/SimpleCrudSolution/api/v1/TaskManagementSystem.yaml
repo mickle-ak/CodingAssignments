@@ -9,8 +9,21 @@ security:
 
 paths:
 
+  #########################
+  ###                   ###
+  ###       login       ###
+  ###                   ###
+  #########################
+
   /login:
     $ref: 'login.yaml#/operations/root'
+
+
+  #########################
+  ###                   ###
+  ###       tasks       ###
+  ###                   ###
+  #########################
 
   /tasks:
     get:
@@ -50,6 +63,13 @@ paths:
           $ref: 'error-responses.yaml#/components/responses/AccessDenied'
         '500':
           $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###       task        ###
+  ###                   ###
+  #########################
 
   /tasks/{taskId}:
     get:
@@ -118,6 +138,231 @@ paths:
         '500':
           $ref: 'error-responses.yaml#/components/responses/InternalServerError'
 
+
+  #########################
+  ###                   ###
+  ###  task properties  ###
+  ###                   ###
+  #########################
+
+  /tasks/{taskId}/status:
+    put:
+      operationId: updateTaskStatus
+      summary: Update the status of a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: 'data.yaml#/components/schemas/TaskStatus'
+              required:
+                - status
+      responses:
+        '200':
+          description: Task status updated
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '409':
+          $ref: 'error-responses.yaml#/components/responses/InvalidStateError'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+  /tasks/{taskId}/assignee:
+    put:
+      operationId: updateTaskAssignee
+      summary: Update the assignee of a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                assignee:
+                  type: string
+                  nullable: false
+              required:
+                - assignee
+      responses:
+        '200':
+          description: Task assignee updated
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '409':
+          $ref: 'error-responses.yaml#/components/responses/InvalidStateError'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###      comments     ###
+  ###                   ###
+  #########################
+
+  /tasks/{taskId}/comments:
+    get:
+      operationId: getTaskComments
+      summary: Get all comments for a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: A list of comments for the task
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/CommentList'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+    post:
+      operationId: createTaskComment
+      summary: Create a new comment for a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'data.yaml#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###      comment      ###
+  ###                   ###
+  #########################
+
+  /tasks/{taskId}/comments/{commentId}:
+    put:
+      operationId: updateComment
+      summary: Update a comment by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+        - $ref: '#/components/parameters/commentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'data.yaml#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comment updated
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/Comment'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteComment
+      summary: Delete a comment by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+        - $ref: '#/components/parameters/commentId'
+      responses:
+        '204':
+          description: Comment deleted
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###      assignee     ###
+  ###                   ###
+  #########################
+
+  /tasks/my:
+    get:
+      operationId: getMyTasks
+      summary: Get all tasks assigned to the current user
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/TaskList'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+#########################
+###                   ###
+###     components    ###
+###                   ###
+#########################
+
 components:
 
   securitySchemes:
@@ -126,9 +371,19 @@ components:
       scheme: bearer
       bearerFormat: JWT
 
+
   parameters:
+
     taskId:
       name: taskId
+      in: path
+      required: true
+      schema:
+        type: integer
+        description: Unique identifier for the task
+
+    commentId:
+      name: commentId
       in: path
       required: true
       schema:

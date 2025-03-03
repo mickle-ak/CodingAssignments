@@ -38,18 +38,60 @@ components:
                     type: string
                     nullable: true
                 status:
-                    description: Current status of the task
-                    type: string
-                    enum:
-                        - pending
-                        - in_progress
-                        - completed
-                    default: pending
+                    $ref: "#/components/schemas/TaskStatus"
                 priority:
-                    description: Priority level of the task
+                    $ref: "#/components/schemas/TaskPriority"
+                author:
+                    description: User name of the author
                     type: string
-                    enum:
-                        - low
-                        - medium
-                        - high
-                    default: medium
+                    readOnly: true
+                    nullable: true
+                assignee:
+                    description: User name of the assignee
+                    type: string
+                    nullable: true
+
+        TaskStatus:
+            description: Status of the task
+            type: string
+            enum:
+                - pending
+                - in_progress
+                - completed
+            default: pending
+
+        TaskPriority:
+            description: Priority level of the task
+            type: string
+            enum:
+                - low
+                - medium
+                - high
+            default: medium
+
+
+        CommentList:
+            type: array
+            items:
+                $ref: "#/components/schemas/Comment"
+
+        Comment:
+            type: object
+            required:
+                - text
+            properties:
+                id:
+                    description: Unique identifier for the comment
+                    type: integer
+                    minimum: 1
+                    readOnly: true
+                    nullable: true
+                text:
+                    description: Text of the comment
+                    type: string
+                    minLength: 1
+                author:
+                    description: User name of the author
+                    type: string
+                    readOnly: true
+                    nullable: true
