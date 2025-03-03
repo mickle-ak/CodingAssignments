@@ -1,25 +1,136 @@
 openapi: 3.0.3
 info:
-    title: Simple Task Management System
-    description: API for a simple task management system
-    version: 1.0.0
-
-components:
-    securitySchemes:
-        BearerAuth:
-            type: http
-            scheme: bearer
-            bearerFormat: JWT
+  title: Simple Task Management System
+  description: API for a simple task management system
+  version: 1.0.0
 
 security:
-    - BearerAuth: []
+  - BearerAuth: [ ]
 
 paths:
 
-    /login:
-        $ref: 'login.yaml#/operations/root'
+  /login:
+    $ref: 'login.yaml#/operations/root'
 
-    /tasks:
-        $ref: 'tasks/operations.yaml#/operations/root'
-    /tasks/{taskId}:
-        $ref: 'tasks/operations.yaml#/operations/with_task_id'
+  /tasks:
+    get:
+      operationId: getAllTasks
+      summary: Get all tasks
+      security: [ ] # No security required for get
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/TaskList'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+    post:
+      operationId: createTask
+      summary: Create a new task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'data.yaml#/components/schemas/Task'
+      responses:
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+  /tasks/{taskId}:
+    get:
+      operationId: getTaskById
+      summary: Get a task by ID
+      security: [ ] # No security required for get
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: A task
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+    put:
+      operationId: updateTask
+      summary: Update a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'data.yaml#/components/schemas/Task'
+      responses:
+        '200':
+          description: Task updated
+          content:
+            application/json:
+              schema:
+                $ref: 'data.yaml#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteTask
+      summary: Delete a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '204':
+          description: Task deleted
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      schema:
+        type: integer
+        description: Unique identifier for the task
