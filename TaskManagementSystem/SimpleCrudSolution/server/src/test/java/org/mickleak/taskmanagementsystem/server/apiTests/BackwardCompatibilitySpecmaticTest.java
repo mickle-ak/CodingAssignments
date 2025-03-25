@@ -13,7 +13,7 @@ class BackwardCompatibilitySpecmaticTest {
 
 	@Test
 	void backwardCompatibilityTest() throws IOException, InterruptedException {
-		String specmaticVersion = "2.5.0";
+		String specmaticVersion = "2.7.6";
 		String specmaticJarCanonicalPath = new File( "lib/specmatic-" + specmaticVersion + ".jar" ).getCanonicalPath().replace( '\\', '/' );
 		String gitRoot = executeCommand( "git", "rev-parse", "--show-toplevel" ).output().trim();
 
