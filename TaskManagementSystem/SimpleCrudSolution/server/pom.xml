@@ -190,6 +190,7 @@
 							<modelPackage>org.mickleak.taskmanagementsystem.server.api.${api.version}</modelPackage>
 							<supportingFilesToGenerate>ApiUtil.java,openapi.yaml</supportingFilesToGenerate>
 							<configOptions>
+								<useTags>true</useTags>
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 								<requestMappingMode>api_interface</requestMappingMode>

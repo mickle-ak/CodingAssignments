@@ -3,14 +3,15 @@ info:
   title: login operation
   description:  Login operation for the task management system
   version: '1.0'
-paths: {}
 
 
-# noinspection YAMLSchemaValidation
-operations:
-  root:
+paths:
+
+  login:
+
     post:
       operationId: login
+      tags: [login]
       summary: Login
       security: [] # No security required for login
       requestBody:

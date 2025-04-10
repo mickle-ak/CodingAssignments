@@ -1,0 +1,176 @@
+openapi: 3.0.3
+info:
+  title: Simple Task Management System
+  description: API for a simple task management system
+  version: 1.0.0
+
+paths:
+
+  #########################
+  ###                   ###
+  ###      comments     ###
+  ###                   ###
+  #########################
+
+  commentsOperations:
+
+    get:
+      operationId: getTaskComments
+      tags: [comments]
+      summary: Get all comments for a task by ID
+      parameters:
+        - $ref: 'tasks.yaml#/components/parameters/taskId'
+      responses:
+        '200':
+          description: A list of comments for the task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentList'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+    post:
+      operationId: createTaskComment
+      tags: [comments]
+      summary: Create a new comment for a task by ID
+      parameters:
+        - $ref: 'tasks.yaml#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###   one comment     ###
+  ###                   ###
+  #########################
+
+  oneCommentOperations:
+
+    put:
+      operationId: updateComment
+      tags: [comments]
+      summary: Update a comment by ID
+      parameters:
+        - $ref: 'tasks.yaml#/components/parameters/taskId'
+        - $ref: '#/components/parameters/commentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+    delete:
+      operationId: deleteComment
+      tags: [comments]
+      summary: Delete a comment by ID
+      parameters:
+        - $ref: 'tasks.yaml#/components/parameters/taskId'
+        - $ref: '#/components/parameters/commentId'
+      responses:
+        '204':
+          description: Comment deleted
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+
+#########################
+###                   ###
+###     components    ###
+###                   ###
+#########################
+
+components:
+
+  schemas:
+
+    CommentList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Comment"
+
+    Comment:
+      type: object
+      required:
+        - text
+      properties:
+        id:
+          description: Unique identifier for the comment
+          type: integer
+          minimum: 1
+          readOnly: true
+          nullable: true
+        text:
+          description: Text of the comment
+          type: string
+          minLength: 1
+        author:
+          description: User name of the author
+          type: string
+          readOnly: true
+          nullable: true
+
+
+  parameters:
+
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      schema:
+        type: integer
+        description: Unique identifier for the task
+

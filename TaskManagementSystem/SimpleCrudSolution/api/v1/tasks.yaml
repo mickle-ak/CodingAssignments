@@ -1,0 +1,330 @@
+openapi: 3.0.0
+info:
+  title: Tasks Operations in Simple Task Management System
+  description: API for operations with Tasks
+  version: 1.0.0
+
+paths:
+
+  #########################
+  ###                   ###
+  ###       tasks       ###
+  ###                   ###
+  #########################
+
+  tasksOperations:
+
+    get:
+      operationId: getAllTasks
+      tags: [tasks]
+      summary: Get all tasks
+      security: [ ] # No security required for get
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+    post:
+      operationId: createTask
+      tags: [tasks]
+      summary: Create a new task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###     one task      ###
+  ###                   ###
+  #########################
+
+  oneTaskOperations:
+
+    get:
+      operationId: getTaskById
+      tags: [tasks]
+      summary: Get a task by ID
+      security: [ ] # No security required for get
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: A task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+    put:
+      operationId: updateTask
+      tags: [tasks]
+      summary: Update a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: Task updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+    delete:
+      operationId: deleteTask
+      tags: [tasks]
+      summary: Delete a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '204':
+          description: Task deleted
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###  task properties  ###
+  ###                   ###
+  #########################
+
+  tasksStatus:
+
+    put:
+      operationId: updateTaskStatus
+      tags: [tasks]
+      summary: Update the status of a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: '#/components/schemas/TaskStatus'
+              required:
+                - status
+      responses:
+        '200':
+          description: Task status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '409':
+          $ref: 'error-responses.yaml#/components/responses/InvalidStateError'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  tasksAssignee:
+
+    put:
+      operationId: updateTaskAssignee
+      tags: [ tasks ]
+      summary: Update the assignee of a task by ID
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                assignee:
+                  type: string
+              required:
+                - assignee
+      responses:
+        '200':
+          description: Task assignee updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          $ref: 'error-responses.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '404':
+          $ref: 'error-responses.yaml#/components/responses/NotFound'
+        '409':
+          $ref: 'error-responses.yaml#/components/responses/InvalidStateError'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+  #########################
+  ###                   ###
+  ###      assignee     ###
+  ###                   ###
+  #########################
+
+  tasksAssignedToMe:
+
+    get:
+      operationId: getMyTasks
+      tags: [ tasks ]
+      summary: Get all tasks assigned to the current user
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+        '401':
+          $ref: 'error-responses.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: 'error-responses.yaml#/components/responses/AccessDenied'
+        '500':
+          $ref: 'error-responses.yaml#/components/responses/InternalServerError'
+
+
+#########################
+###                   ###
+###     components    ###
+###                   ###
+#########################
+
+components:
+
+  schemas:
+
+    TaskList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Task"
+
+    Task:
+      type: object
+      required:
+        - title
+        - id
+        - status
+        - priority
+      properties:
+        id:
+          description: Unique identifier for the task
+          type: integer
+          minimum: 1
+          readOnly: true
+          nullable: true
+        title:
+          description: Title of the task
+          type: string
+          maxLength: 512
+          minLength: 1
+        description:
+          description: Description of the task
+          type: string
+          nullable: true
+        status:
+          $ref: "#/components/schemas/TaskStatus"
+        priority:
+          $ref: "#/components/schemas/TaskPriority"
+        author:
+          description: User name of the author
+          type: string
+          readOnly: true
+          nullable: true
+        assignee:
+          description: User name of the assignee
+          type: string
+          nullable: true
+
+    TaskStatus:
+      description: Status of the task
+      type: string
+      enum:
+        - pending
+        - in_progress
+        - completed
+      default: pending
+
+    TaskPriority:
+      description: Priority level of the task
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+      default: medium
+
+
+  parameters:
+
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      schema:
+        type: integer
+        description: Unique identifier for the task
