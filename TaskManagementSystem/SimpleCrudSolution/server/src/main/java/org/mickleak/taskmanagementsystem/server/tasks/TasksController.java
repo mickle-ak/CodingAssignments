@@ -1,6 +1,8 @@
 package org.mickleak.taskmanagementsystem.server.tasks;
 
 import org.mickleak.taskmanagementsystem.server.api.v1.Task;
+import org.mickleak.taskmanagementsystem.server.api.v1.TaskPriority;
+import org.mickleak.taskmanagementsystem.server.api.v1.TaskStatus;
 import org.mickleak.taskmanagementsystem.server.api.v1.TasksApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,10 @@ public class TasksController implements TasksApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Task>> getAllTasks() {
+	public ResponseEntity<List<Task>> getAllTasks( final List<TaskStatus> status,
+	                                               final List<TaskPriority> priority,
+	                                               final List<String> author,
+	                                               final List<String> assignee ) {
 		final List<Task> tasks = tasksService.getAllTasks();
 		return ResponseEntity.ok( tasks );
 	}
